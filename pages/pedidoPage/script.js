@@ -106,10 +106,10 @@ export function pedido(){
         // }
 
         btnClean.addEventListener("click", () => {
+            showLoandingOverlay();
             const dbRef = ref(db, "orders");
             remove(dbRef)
 
-            showLoandingOverlay();
             try{
                 alert("Todos os pedidos removidos");
                 order.innerHTML = "";

@@ -8,6 +8,9 @@ export function estoque(){
     const btnLimpar = document.getElementById("limpar");
     const btnUpdateEstoque = document.getElementById("update-estoque");
     const btnVoltarEstoque = document.getElementById("voltar");
+    const btnRegisterProduct = document.getElementById("register-product");
+    const btnPlusMassa = document.getElementById("plus-massa");
+    const displayPlusMassa = document.getElementById("register-massa");
 
     const currentDate = document.getElementById("current-date");
 
@@ -37,6 +40,35 @@ export function estoque(){
     const resultBebidas = document.getElementById("bebidas");
     const buttonAddBebida = document.getElementById("add-bebida");
     let contBebida = 1;
+
+    const closeModal = document.querySelector("#close-modal");
+    const modal = document.querySelector("#modal");
+    const fade = document.querySelector("#fade");
+
+    const toggleModal = () => {
+        [modal, fade].forEach((el) => el.classList.toggle("hide"));
+    };
+    const showModal = () => {
+        toggleModal();
+    };
+    closeModal.addEventListener("click", () => {
+        toggleModal();
+    });
+
+    if(btnRegisterProduct){
+        btnRegisterProduct.addEventListener("click", () => {
+            showModal();
+        });
+    }
+
+    btnPlusMassa.addEventListener("click", () => {
+        const registerMassa = 
+        `
+            <input type="text" placeholder="Registre a massa" class="border-b-1 border-zinc-800 pl-1 pb-1">
+        `;
+        displayPlusMassa.insertAdjacentHTML("beforeend", registerMassa);
+    });
+
 
     const addMassa = () => {
         const idMassa = `${contMassas}`;
@@ -242,7 +274,6 @@ export function estoque(){
             });
             const dbMassa = ref(db, "massa");
             const newRefMassa = push(dbMassa);
-
             set(newRefMassa, { listMassas });
 
             saveRecheio.forEach((div) => {
@@ -253,7 +284,6 @@ export function estoque(){
             });
             const dbRecheio = ref(db, "recheio");
             const newRefRecheio = push(dbRecheio);
-
             set(newRefRecheio, { listRecheios });
 
             saveBebida.forEach((div) => {
@@ -264,7 +294,6 @@ export function estoque(){
             });
             const dbBebida = ref(db, "bebida");
             const newRefBebida = push(dbBebida);
-
             set(newRefBebida, { listBebidas });
 
             estoque.classList.remove("hidden");

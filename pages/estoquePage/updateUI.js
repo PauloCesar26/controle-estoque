@@ -13,10 +13,10 @@ export function updateUI(){
 
     const form = document.getElementById("form");
     const btnUpdateEstoque = document.getElementById("update-estoque");
+    const btnRegisterProduct = document.getElementById("register-product");
     const estoque = document.getElementById("estoque");
     const loandingOverlay = document.getElementById("loadingOverlay");
 
-    // const massaEstoque = JSON.parse(localStorage.getItem("massas")) || [];
     const massaEstoqueRef = ref(db, "massa");
     const recheioEstoqueRef = ref(db, "recheio");
     const bebidaEstoqueRef = ref(db, "bebida");
@@ -83,6 +83,7 @@ export function updateUI(){
 
         form.classList.add("hidden");
         btnUpdateEstoque.classList.remove("hidden");
+        btnRegisterProduct.classList.remove("hidden");
         estoque.classList.remove("hidden");
         loandingOverlay.classList.add("hidden");
     }, 900);
