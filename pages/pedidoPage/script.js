@@ -1,6 +1,7 @@
+import { ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 import { updateUI } from "../estoquePage/updateUI.js";
 import { db } from "../../app.js";
-import { ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { loadingOverlay } from "../estoquePage/loadingOverlay.js";
 
 export function pedido(){
     const form = document.getElementById("form");
@@ -19,9 +20,6 @@ export function pedido(){
     const year = date.getFullYear();
     const formattedDate = `${day}/${month}/${year}`;
     currentDate.textContent = formattedDate;
-
-    const loandingOverlay = document.getElementById("loadingOverlay");
-    const showLoandingOverlay = () => loandingOverlay?.classList.remove("hidden");
 
     const closeModal = document.querySelector("#close-modal");
     const modal = document.querySelector("#modal");
@@ -106,7 +104,8 @@ export function pedido(){
         // }
 
         btnClean.addEventListener("click", () => {
-            showLoandingOverlay();
+            loadingOverlay.show();
+
             const dbRef = ref(db, "orders");
             remove(dbRef)
 
@@ -117,16 +116,15 @@ export function pedido(){
             catch(error){
                 console.error("Erro ao apagar pedidos: ", error);
                 alert("Erro ao apagar pedidos.");
-                loandingOverlay.classList.add("hidden");
             }
             finally{
-                loandingOverlay.classList.add("hidden");
+                loadingOverlay.hide();
             }
         });
     }
 
     const renderOrders = (snapshot) => {
-        showLoandingOverlay();
+        loadingOverlay.show();
 
         setTimeout(() => {
             order.innerHTML = "";
@@ -231,8 +229,7 @@ export function pedido(){
                 div.appendChild(divButton);
                 order.appendChild(div);
             });
-
-            loandingOverlay.classList.add("hidden");
+            loadingOverlay.hide();
         }, 800)
     };
     

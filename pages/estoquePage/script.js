@@ -1,16 +1,14 @@
 import { updateUI } from "./updateUI.js";
 import { loadCurrentEstoque } from "./loadCurrentEstoque.js";
+import { loadingOverlay } from "./loadingOverlay.js";
 import { db } from "../../app.js";
-import { ref, onValue, push, set, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { ref, onValue, push, set, remove, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 export function estoque(){
     const form = document.getElementById("form");
     const btnLimpar = document.getElementById("limpar");
     const btnUpdateEstoque = document.getElementById("update-estoque");
     const btnVoltarEstoque = document.getElementById("voltar");
-    const btnRegisterProduct = document.getElementById("register-product");
-    const btnPlusMassa = document.getElementById("plus-massa");
-    const displayPlusMassa = document.getElementById("register-massa");
 
     const currentDate = document.getElementById("current-date");
 
@@ -18,9 +16,6 @@ export function estoque(){
     const displayMassa = document.getElementById("exibir-massa");
     const displayRecheio = document.getElementById("exibir-recheio");
     const displayBebida = document.getElementById("exibir-bebida");
-
-    const loandingOverlay = document.getElementById("loadingOverlay");
-    const showLoandingOverlay = () => loandingOverlay?.classList.remove("hidden");
 
     const date = new Date(); 
     const day = date.getDate();
@@ -41,36 +36,22 @@ export function estoque(){
     const buttonAddBebida = document.getElementById("add-bebida");
     let contBebida = 1;
 
-    const closeModal = document.querySelector("#close-modal");
-    const modal = document.querySelector("#modal");
-    const fade = document.querySelector("#fade");
+    // const closeModal = document.querySelector("#close-modal");
+    // const modal = document.querySelector("#modal");
+    // const fade = document.querySelector("#fade");
 
-    const toggleModal = () => {
-        [modal, fade].forEach((el) => el.classList.toggle("hide"));
-    };
-    const showModal = () => {
-        toggleModal();
-    };
-    closeModal.addEventListener("click", () => {
-        toggleModal();
-    });
+    // const toggleModal = () => {
+    //     [modal, fade].forEach((el) => el.classList.toggle("hide"));
+    // };
+    // const showModal = () => {
+    //     toggleModal();
+    // };
+    // closeModal.addEventListener("click", () => {
+    //     toggleModal();
+    // });
 
-    if(btnRegisterProduct){
-        btnRegisterProduct.addEventListener("click", () => {
-            showModal();
-        });
-    }
-
-    btnPlusMassa.addEventListener("click", () => {
-        const registerMassa = 
-        `
-            <input type="text" placeholder="Registre a massa" class="border-b-1 border-zinc-800 pl-1 pb-1">
-        `;
-        displayPlusMassa.insertAdjacentHTML("beforeend", registerMassa);
-    });
-
-
-    const addMassa = () => {
+    buttonAddMassa.addEventListener("click", () => {
+        console.log("clicou")
         const idMassa = `${contMassas}`;
 
         const massasAdd = 
@@ -79,13 +60,7 @@ export function estoque(){
                 <div class="flex flex-col">
                     <span class="flex flex-col gap-1">
                         <label for="massas">Massa:</label>
-                        <select name="" class="name-massas w-30 bg-zinc-100 text-black pt-1 pb-1 pl-1 pr-3 rounded-[10px]">
-                            <option value="">Selecione...</option>
-                            <option value="Chocolate">Chocolate</option>
-                            <option value="Branca">Branca</option>
-                            <option value="Red Velvet">Red velvet</option>
-                            <option value="Cenoura">Cenoura</option>
-                        </select>
+                        <input type="text" placeholder="Digite o sabor da massa" class="name-massas max-w-50 bg-zinc-100 text-black p-2 rounded-[10px]" />
                     </span>
                     <p id="erro-massa" class="text-red-900"></p>
                 </div>
@@ -93,7 +68,7 @@ export function estoque(){
                 <div class="flex flex-col">
                     <span class="flex flex-col gap-1">
                         <label for="qtd-massa">Quantidade:</label>
-                        <input type="number" placeholder="Digite a qtd para o estoque" class="qtd-massa bg-zinc-100 rounded-[10px] pt-2 pb-2 pl-2 text-black">
+                        <input type="number" placeholder="Digite a quantidade" class="qtd-massa max-w-50 bg-zinc-100 rounded-[10px] p-2 text-black">
                     </span>
                     <p id="erro-qtd-massa" class="text-red-900"></p>
                 </div>
@@ -107,7 +82,7 @@ export function estoque(){
         resultMassas.insertAdjacentHTML("beforeend", massasAdd);
 
         contMassas++;
-    };
+    });
     window.removeMassa = (id) => {
         const element = document.getElementById(id);
         
@@ -116,7 +91,7 @@ export function estoque(){
         }
     };
 
-    const addRecheio = () => {
+    buttonAddRecheio.addEventListener("click", () => {
         const idRecheio = `${contRecheio}`;
 
         const recheioAdd = 
@@ -125,13 +100,7 @@ export function estoque(){
                 <div class="flex flex-col">
                     <span class="flex flex-col gap-1">
                         <label for="recheio">Recheio:</label>
-                        <select name="" class="name-recheio w-30 bg-zinc-100 text-black pt-1 pb-1 pl-1 pr-3 rounded-[10px]">
-                            <option value="">Selecione...</option>
-                            <option value="Chocolate">Chocolate</option>
-                            <option value="Ninho">Ninho</option>
-                            <option value="Doce de Leite">Doce de leite</option>
-                            <option value="Maracujá">Maracujá</option>
-                        </select>
+                        <input type="text" placeholder="Digite o sabor do recheio" class="name-recheio max-w-50 bg-zinc-100 text-black p-2 rounded-[10px]" />
                     </span>
                     <p id="erro-recheio" class="text-red-900"></p>
                 </div>
@@ -139,7 +108,7 @@ export function estoque(){
                 <div class="flex flex-col">
                     <span class="flex flex-col gap-1">
                         <label for="qtd-recheio">Quantidade:</label>
-                        <input type="number" placeholder="Digite a qtd para o estoque" class="qtd-recheio bg-zinc-100 rounded-[10px] pt-2 pb-2 pl-2 text-black">
+                        <input type="number" placeholder="Digite a quantidade" class="qtd-recheio max-w-50 bg-zinc-100 rounded-[10px] p-2 text-black">
                     </span>
                     <p id="erro-qtd-recheio" class="text-red-900"></p>
                 </div>
@@ -153,7 +122,7 @@ export function estoque(){
         resultRecheios.insertAdjacentHTML("beforeend", recheioAdd);
 
         contRecheio++;
-    };
+    });
     window.removeRecheio = (id) => {
         const element = document.getElementById(id);
         
@@ -162,7 +131,7 @@ export function estoque(){
         }
     };
 
-    const addBebida = () => {
+    buttonAddBebida.addEventListener("click", () => {
         const idBebida = `${contBebida}`;
 
         const bebidaAdd = 
@@ -171,13 +140,7 @@ export function estoque(){
             <div class="flex flex-col">
                 <span class="flex flex-col gap-1">
                     <label for="bebida">Bebida:</label>
-                    <select name="" class="name-bebida w-30 bg-zinc-100 text-black pt-1 pb-1 pl-1 pr-3 rounded-[10px]">
-                        <option value="">Selecione...</option>
-                        <option value="Coca">Coca</option>
-                        <option value="Fanta">Fanta</option>
-                        <option value="Água">Água</option>
-                        <option value="Guarana">Guarana</option>
-                    </select>
+                    <input type="text" placeholder="Digite o nome da bebida" class="name-bebida max-w-50 bg-zinc-100 text-black p-2 rounded-[10px]" />
                 </span>
                 <p id="erro-bebida" class="text-red-900"></p>
             </div>
@@ -185,7 +148,7 @@ export function estoque(){
             <div class="flex flex-col">
                 <span class="flex flex-col gap-1">
                     <label for="qtd-bebida">Quantidade:</label>
-                    <input type="number" placeholder="Digite a qtd para o estoque" class="qtd-bebida bg-zinc-100 rounded-[10px] pt-2 pb-2 pl-2 text-black">
+                    <input type="number" placeholder="Digite a quantidade" class="qtd-bebida max-w-50 bg-zinc-100 rounded-[10px] p-2 text-black">
                 </span>
                 <p id="erro-qtd-bebida" class="text-red-900"></p>
             </div>
@@ -199,7 +162,7 @@ export function estoque(){
         resultBebidas.insertAdjacentHTML("beforeend", bebidaAdd);
 
         contBebida++;
-    };
+    });
     window.removeBebida = (id) => {
         const element = document.getElementById(id);
         
@@ -208,36 +171,32 @@ export function estoque(){
         }
     };
 
-    buttonAddMassa.addEventListener("click", addMassa);
-    buttonAddRecheio.addEventListener("click", addRecheio);
-    buttonAddBebida.addEventListener("click", addBebida);
-
     if(btnUpdateEstoque){
         btnUpdateEstoque.addEventListener("click", () => {
-            showLoandingOverlay();
+            loadingOverlay.show();
 
             setTimeout(() => {
                 form.classList.remove("hidden");
                 btnUpdateEstoque.classList.add("hidden");
-                loandingOverlay.classList.add("hidden");
+                loadingOverlay.hide();
             }, 800);
         });
     }
 
     async function cleanDB(){
-        showLoandingOverlay();
+        loadingOverlay.show();
 
         try{
             await remove(ref(db, "massa"));
             await remove(ref(db, "recheio"));
             await remove(ref(db, "bebida"));
             
-            loandingOverlay.classList.add("hidden");
             alert("Dados apagados");
+           loadingOverlay.hide();
         }
         catch(error){
-            loandingOverlay.classList.add("hidden");
             alert(`Erro! ${error.message}`);
+            loadingOverlay.hide();
         }
     };
 
@@ -302,7 +261,33 @@ export function estoque(){
         });
     }
 
-    updateUI();
+    async function checkDataRealtimeDb(){
+        const massaRef = ref(db, "massa");
+        const recheioRef = ref(db, "recheio");
+        const bebidaRef = ref(db, "bebida");
+
+        try{
+            const [massaSnap, recheioSnap, bebidaSnap] = await Promise.all([
+                get(massaRef),
+                get(recheioRef),
+                get(bebidaRef)
+            ]);
+
+            const hasData = massaSnap.exists() || recheioSnap.exists() || bebidaSnap.exists();
+
+            if(hasData){
+                updateUI();
+            } 
+            else{
+                console.log("Nenhum dado encontrado no Firebase");
+            }
+        } 
+        catch(error){
+            console.error("Erro ao buscar dados do Firebase:", error);
+        }
+    };
+
+    checkDataRealtimeDb();
     // if(localStorage.getItem("estoqueAtualMassas") && localStorage.getItem("estoqueAtualRecheios") && localStorage.getItem("estoqueAtualBebidas")){
     //     loadCurrentEstoque();
     // }
