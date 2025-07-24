@@ -3,6 +3,8 @@ import { loadCurrentEstoque } from "./loadCurrentEstoque.js";
 import { loadingOverlay } from "./loadingOverlay.js";
 import { db } from "../../app.js";
 import { ref, onValue, push, set, remove, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { checkDataDb } from "./checkData.js";
+import { cleanDB } from "./cleanDb.js";
 
 export function estoque(){
     const form = document.getElementById("form");
@@ -60,7 +62,7 @@ export function estoque(){
                 <div class="flex flex-col">
                     <span class="flex flex-col gap-1">
                         <label for="massas">Massa:</label>
-                        <input type="text" placeholder="Digite o sabor da massa" class="name-massas max-w-50 bg-zinc-100 text-black p-2 rounded-[10px]" />
+                        <input type="text" placeholder="Digite o sabor da massa" class="name-massas max-w-50 bg-zinc-100 text-black p-1 rounded-[7px]" />
                     </span>
                     <p id="erro-massa" class="text-red-900"></p>
                 </div>
@@ -68,7 +70,7 @@ export function estoque(){
                 <div class="flex flex-col">
                     <span class="flex flex-col gap-1">
                         <label for="qtd-massa">Quantidade:</label>
-                        <input type="number" placeholder="Digite a quantidade" class="qtd-massa max-w-50 bg-zinc-100 rounded-[10px] p-2 text-black">
+                        <input type="number" placeholder="Digite a quantidade" class="qtd-massa max-w-50 bg-zinc-100 rounded-[7px] p-1 text-black">
                     </span>
                     <p id="erro-qtd-massa" class="text-red-900"></p>
                 </div>
@@ -100,7 +102,7 @@ export function estoque(){
                 <div class="flex flex-col">
                     <span class="flex flex-col gap-1">
                         <label for="recheio">Recheio:</label>
-                        <input type="text" placeholder="Digite o sabor do recheio" class="name-recheio max-w-50 bg-zinc-100 text-black p-2 rounded-[10px]" />
+                        <input type="text" placeholder="Digite o sabor do recheio" class="name-recheio max-w-50 bg-zinc-100 text-black  p-1 rounded-[7px]" />
                     </span>
                     <p id="erro-recheio" class="text-red-900"></p>
                 </div>
@@ -108,7 +110,7 @@ export function estoque(){
                 <div class="flex flex-col">
                     <span class="flex flex-col gap-1">
                         <label for="qtd-recheio">Quantidade:</label>
-                        <input type="number" placeholder="Digite a quantidade" class="qtd-recheio max-w-50 bg-zinc-100 rounded-[10px] p-2 text-black">
+                        <input type="number" placeholder="Digite a quantidade" class="qtd-recheio max-w-50 bg-zinc-100  p-1 rounded-[7px] text-black">
                     </span>
                     <p id="erro-qtd-recheio" class="text-red-900"></p>
                 </div>
@@ -140,7 +142,7 @@ export function estoque(){
             <div class="flex flex-col">
                 <span class="flex flex-col gap-1">
                     <label for="bebida">Bebida:</label>
-                    <input type="text" placeholder="Digite o nome da bebida" class="name-bebida max-w-50 bg-zinc-100 text-black p-2 rounded-[10px]" />
+                    <input type="text" placeholder="Digite o nome da bebida" class="name-bebida max-w-50 bg-zinc-100 text-black  p-1 rounded-[7px]" />
                 </span>
                 <p id="erro-bebida" class="text-red-900"></p>
             </div>
@@ -148,7 +150,7 @@ export function estoque(){
             <div class="flex flex-col">
                 <span class="flex flex-col gap-1">
                     <label for="qtd-bebida">Quantidade:</label>
-                    <input type="number" placeholder="Digite a quantidade" class="qtd-bebida max-w-50 bg-zinc-100 rounded-[10px] p-2 text-black">
+                    <input type="number" placeholder="Digite a quantidade" class="qtd-bebida max-w-50 bg-zinc-100  p-1 rounded-[7px] text-black">
                 </span>
                 <p id="erro-qtd-bebida" class="text-red-900"></p>
             </div>
@@ -182,23 +184,6 @@ export function estoque(){
             }, 800);
         });
     }
-
-    async function cleanDB(){
-        loadingOverlay.show();
-
-        try{
-            await remove(ref(db, "massa"));
-            await remove(ref(db, "recheio"));
-            await remove(ref(db, "bebida"));
-            
-            alert("Dados apagados");
-           loadingOverlay.hide();
-        }
-        catch(error){
-            alert(`Erro! ${error.message}`);
-            loadingOverlay.hide();
-        }
-    };
 
     btnLimpar.addEventListener("click", async () => {
         await cleanDB();
@@ -261,33 +246,7 @@ export function estoque(){
         });
     }
 
-    async function checkDataRealtimeDb(){
-        const massaRef = ref(db, "massa");
-        const recheioRef = ref(db, "recheio");
-        const bebidaRef = ref(db, "bebida");
-
-        try{
-            const [massaSnap, recheioSnap, bebidaSnap] = await Promise.all([
-                get(massaRef),
-                get(recheioRef),
-                get(bebidaRef)
-            ]);
-
-            const hasData = massaSnap.exists() || recheioSnap.exists() || bebidaSnap.exists();
-
-            if(hasData){
-                updateUI();
-            } 
-            else{
-                console.log("Nenhum dado encontrado no Firebase");
-            }
-        } 
-        catch(error){
-            console.error("Erro ao buscar dados do Firebase:", error);
-        }
-    };
-
-    checkDataRealtimeDb();
+    checkDataDb();
     // if(localStorage.getItem("estoqueAtualMassas") && localStorage.getItem("estoqueAtualRecheios") && localStorage.getItem("estoqueAtualBebidas")){
     //     loadCurrentEstoque();
     // }

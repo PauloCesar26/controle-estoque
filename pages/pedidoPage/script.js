@@ -2,6 +2,7 @@ import { ref, onValue, push, set, remove, update } from "https://www.gstatic.com
 import { updateUI } from "../estoquePage/updateUI.js";
 import { db } from "../../app.js";
 import { loadingOverlay } from "../estoquePage/loadingOverlay.js";
+import { cleanOrderDb } from "./cleanOrderDb.js";
 
 export function pedido(){
     const form = document.getElementById("form");
@@ -36,21 +37,31 @@ export function pedido(){
     closeModal.addEventListener("click", () => {
         toggleModal();
     });
+    
+    // let numOrder = 0;
+    // const dbOrder = ref(db, "orders");
+    // onValue(dbOrder, (snapshot) => {
+    //     const data = snapshot.val();
 
-    onValue(ref(db, "orders"), (snapshot) => {
-        renderOrders(snapshot);
-    });
+    //     if(data){
+    //         const totalPedidos = Object.keys(data).length;
+    //         numOrder = totalPedidos + 1;
+    //     } 
+    //     else{
+    //         numOrder = 0;
+    //     }
+    // });
 
     if(form){
         form.addEventListener("submit", (e) => {
             e.preventDefault();
-
+            
             const nomeDigitado = name.value.trim();
             const massa1Pedido = massa1.value;
             const recheio1Pedido = recheio1.value;
             const massa2Pedido = massa2.value;
             const recheio2Pedido = recheio2.value;
-
+            
             if(nomeDigitado === ""){
                 showModal("Preencha o nome do cliente.");
                 return;
@@ -73,6 +84,7 @@ export function pedido(){
             }
             
             const order = {
+                // numOrder: numOrder,
                 name: nomeDigitado,
                 massa1: massa1Pedido,
                 recheio1: recheio1Pedido,
@@ -87,39 +99,9 @@ export function pedido(){
             // updateUI();
             form.reset();
         });
-
-        // async function cleanInfoDB(){
-        //     showLoandingOverlay();
-
-        //     try{
-        //         await remove(ref(db, "orders"));
-                
-        //         loandingOverlay.classList.add("hidden");
-        //         alert("Dados apagados");
-        //     }
-        //     catch(error){
-        //         loandingOverlay.classList.add("hidden");
-        //         alert(`Erro! ${error.message}`);
-        //     }
-        // }
-
+        
         btnClean.addEventListener("click", () => {
-            loadingOverlay.show();
-
-            const dbRef = ref(db, "orders");
-            remove(dbRef)
-
-            try{
-                alert("Todos os pedidos removidos");
-                order.innerHTML = "";
-            }
-            catch(error){
-                console.error("Erro ao apagar pedidos: ", error);
-                alert("Erro ao apagar pedidos.");
-            }
-            finally{
-                loadingOverlay.hide();
-            }
+            cleanOrderDb();
         });
     }
 
@@ -146,27 +128,14 @@ export function pedido(){
                 divButton.classList.add("w-full", "flex", "items-end", "justify-end", "gap-3", "mb-3");
 
                 const span = document.createElement("span");
-
-                const pName = document.createElement("p");
-                pName.textContent = `Nome: ${item.name}`;
-                span.appendChild(pName);
-
-                const pMassa1 = document.createElement("p");
-                pMassa1.textContent = `Massa 1: ${item.massa1}`;
-                span.appendChild(pMassa1);
+                span.innerHTML = `
+                    <p>Nome: ${item.name}</p>
+                    <p>Massa 1: ${item.massa1}</p>
+                    <p>Recheio 1: ${item.recheio1}</p>
+                    <p>Massa 2: ${item.massa2}</p>
+                    <p>Recheio 2: ${item.recheio2}</p>
+                `;
                 
-                const pRecheio1 = document.createElement("p");
-                pRecheio1.textContent = `Recheio 1: ${item.recheio1}`;
-                span.appendChild(pRecheio1);
-                
-                const pMassa2 = document.createElement("p");
-                pMassa2.textContent = `Massa 1: ${item.massa2}`;
-                span.appendChild(pMassa2);
-                
-                const pRecheio2 = document.createElement("p");
-                pRecheio2.textContent = `Recheio 2: ${item.recheio2}`;
-                span.appendChild(pRecheio2);
-
                 const buttonCheck = document.createElement("button");
                 buttonCheck.classList.add(
                     "pt-1",
@@ -189,12 +158,7 @@ export function pedido(){
                     "duration-[0.3s]"
                 );
                 buttonCheck.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>';
-
-                buttonCheck.addEventListener("click", () => {
-                    const isDone = div.classList.toggle("done");
-                    update(ref(db, `orders/${itemId}`), { status: isDone });
-                });
-
+                
                 const buttonDelete = document.createElement("button");
                 buttonDelete.classList.add(
                     "pt-1",
@@ -217,7 +181,11 @@ export function pedido(){
                     "duration-[0.3s]"
                 );
                 buttonDelete.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>';
-
+                
+                buttonCheck.addEventListener("click", () => {
+                    const isDone = div.classList.toggle("done");
+                    update(ref(db, `orders/${itemId}`), { status: isDone });
+                });
                 buttonDelete.addEventListener("click", () => {
                     const orderRef = ref(db, `orders/${itemId}`);
                     remove(orderRef);
@@ -232,7 +200,10 @@ export function pedido(){
             loadingOverlay.hide();
         }, 800)
     };
-    
+
+    onValue(ref(db, "orders"), (snapshot) => {
+        renderOrders(snapshot);
+    });
     onValue(ref(db, "orders"), (snapshot) => {
         renderOrders(snapshot); 
     });
