@@ -1,5 +1,5 @@
 import { estoque } from "./pages/estoquePage/script.js";
-import { pedido } from "./pages/pedidoPage/script.js";
+import { pedido } from "./pages/pedidoPage/script.mjs";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 

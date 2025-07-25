@@ -1,10 +1,10 @@
-import { updateUI } from "./updateUI.js";
+import { updateUI } from "./updateUI.mjs";
 import { loadCurrentEstoque } from "./loadCurrentEstoque.js";
-import { loadingOverlay } from "./loadingOverlay.js";
-import { db } from "../../app.js";
+import { loadingOverlay } from "./loadingOverlay.mjs";
+import { db } from "../../app.mjs";
 import { ref, onValue, push, set, remove, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { checkDataDb } from "./checkData.js";
-import { cleanDB } from "./cleanDb.js";
+import { checkDataDb } from "./checkData.mjs";
+import { cleanDB } from "./cleanDb.mjs";
 
 export function estoque(){
     const form = document.getElementById("form");

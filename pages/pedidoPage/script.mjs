@@ -1,8 +1,8 @@
 import { ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { updateUI } from "../estoquePage/updateUI.js";
-import { db } from "../../app.js";
-import { loadingOverlay } from "../estoquePage/loadingOverlay.js";
-import { cleanOrderDb } from "./cleanOrderDb.js";
+import { updateUI } from "../estoquePage/updateUI.mjs";
+import { db } from "../../app.mjs";
+import { loadingOverlay } from "../estoquePage/loadingOverlay.mjs";
+import { cleanOrderDb } from "./cleanOrderDb.mjs";
 
 export function pedido(){
     const form = document.getElementById("form");

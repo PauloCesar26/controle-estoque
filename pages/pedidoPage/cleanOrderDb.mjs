@@ -1,5 +1,5 @@
-import { loadingOverlay } from "../estoquePage/loadingOverlay.js";
-import { db } from "../../app.js";
+import { loadingOverlay } from "../estoquePage/loadingOverlay.mjs";
+import { db } from "../../app.mjs";
 import { ref, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 export async function cleanOrderDb(){
