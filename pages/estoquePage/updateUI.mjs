@@ -1,5 +1,5 @@
 import { ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { db } from "../../app.js";
+import { db } from "../../app.mjs";
 import { loadingOverlay } from "./loadingOverlay.mjs";
 
 export function updateUI(){    
