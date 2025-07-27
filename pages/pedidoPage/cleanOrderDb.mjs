@@ -4,12 +4,12 @@ import { ref, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-d
 
 export async function cleanOrderDb(){
     const order = document.getElementById("exibir-order");
-    loadingOverlay.show();
     
     const dbRef = ref(db, "orders");
     remove(dbRef)
-
+    
     try{
+        loadingOverlay.show();
         alert("Todos os pedidos removidos");
         order.innerHTML = "";
     }

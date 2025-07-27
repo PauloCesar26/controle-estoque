@@ -3,6 +3,7 @@ import { updateUI } from "../estoquePage/updateUI.mjs";
 import { db } from "../../app.mjs";
 import { loadingOverlay } from "../estoquePage/loadingOverlay.mjs";
 import { cleanOrderDb } from "./cleanOrderDb.mjs";
+import { handleSelect } from "./handleSelect.mjs";
 
 export function pedido(){
     const form = document.getElementById("form");
@@ -53,6 +54,7 @@ export function pedido(){
     // });
 
     if(form){
+        handleSelect();
         form.addEventListener("submit", (e) => {
             e.preventDefault();
             
