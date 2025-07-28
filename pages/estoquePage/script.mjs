@@ -1,9 +1,9 @@
 import { updateUI } from "./updateUI.mjs";
-import { loadCurrentEstoque } from "./loadCurrentEstoque.js";
+import { loadCurrentEstoque } from "./loadCurrentEstoque.mjs";
 import { loadingOverlay } from "./loadingOverlay.mjs";
 import { db } from "../../app.mjs";
 import { ref, onValue, push, set, remove, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { checkDataDb } from "./checkData.mjs";
+import { checkData } from "./checkData.mjs";
 import { cleanDB } from "./cleanDb.mjs";
 
 export function estoque(){
@@ -246,8 +246,5 @@ export function estoque(){
         });
     }
 
-    checkDataDb();
-    // if(localStorage.getItem("estoqueAtualMassas") && localStorage.getItem("estoqueAtualRecheios") && localStorage.getItem("estoqueAtualBebidas")){
-    //     loadCurrentEstoque();
-    // }
+    checkData();
 };

@@ -2,7 +2,7 @@ import { ref, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-data
 import { updateUI } from "./updateUI.mjs";
 import { db } from "../../app.mjs";
 
-export async function checkDataDb(){
+export async function checkData(){
     const massaRef = ref(db, "massa");
     const recheioRef = ref(db, "recheio");
     const bebidaRef = ref(db, "bebida");

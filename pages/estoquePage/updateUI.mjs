@@ -1,14 +1,15 @@
-import { ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 import { db } from "../../app.mjs";
 import { loadingOverlay } from "./loadingOverlay.mjs";
+import { loadCurrentEstoque } from "./loadCurrentEstoque.mjs";
 
 export function updateUI(){    
     const displayMassa = document.getElementById("exibir-massa");
     const displayRecheio = document.getElementById("exibir-recheio");
     const displayBebida = document.getElementById("exibir-bebida");
     
-    // const displayCurrentMassa = document.getElementById("display-current-massa");
-    // const displayCurrentRecheio = document.getElementById("display-current-recheio");
+    const displayCurrentMassa = document.getElementById("display-current-massa");
+    const displayCurrentRecheio = document.getElementById("display-current-recheio");
     
     const form = document.getElementById("form");
     const btnUpdateEstoque = document.getElementById("update-estoque");
@@ -17,12 +18,14 @@ export function updateUI(){
     const massaEstoqueRef = ref(db, "massa");
     const recheioEstoqueRef = ref(db, "recheio");
     const bebidaEstoqueRef = ref(db, "bebida");
+    const ordersRef = ref(db, "orders");
 
     loadingOverlay.show();
     setTimeout(() => {
         onValue(massaEstoqueRef, (snapshot) => {
             const data = snapshot.val();
             const massaEstoque = [];
+
             if(!data){ alert("Não contem massa!"); return; }
     
             Object.values(data).forEach(el => {
@@ -39,8 +42,8 @@ export function updateUI(){
                 massaEstoque.forEach(massa => {
                     displayMassa.innerHTML += 
                     `
-                    <p class="border-b-1 pl-2">${massa.massa || "Sem nome"}</p>
-                    <p class="border-b-1">${massa.quantidade || "0"}</p>
+                        <p class="border-b-1 pl-2">${massa.massa || "Sem nome"}</p>
+                        <p class="border-b-1">${massa.quantidade || "0"}</p>
                     `;
                 }); 
             }
@@ -49,6 +52,7 @@ export function updateUI(){
         onValue(recheioEstoqueRef, (snapshot) => {
             const data = snapshot.val();
             const recheioEstoque = [];
+
             if(!data){ alert("Não contem recheio!"); return; }
     
             Object.values(data).forEach(el => {
@@ -65,8 +69,8 @@ export function updateUI(){
                 recheioEstoque.forEach(recheio => {
                     displayRecheio.innerHTML += 
                     `
-                    <p class="border-b-1 pl-2">${recheio.recheio || "Sem nome"}</p>
-                    <p class="border-b-1">${recheio.quantidade || "0"}</p>
+                        <p class="border-b-1 pl-2">${recheio.recheio || "Sem nome"}</p>
+                        <p class="border-b-1">${recheio.quantidade || "0"}</p>
                     `;
                 });
             }
@@ -75,10 +79,11 @@ export function updateUI(){
         onValue(bebidaEstoqueRef, (snapshot) => {
             const data = snapshot.val();
             const bebidaEstoque = [];
+
             if(!data){ alert("Não contem bebida!"); return; }
     
             Object.values(data).forEach(el => {
-                if (el.listBebidas && Array.isArray(el.listBebidas)) {
+                if(el.listBebidas && Array.isArray(el.listBebidas)){
                     bebidaEstoque.push(...el.listBebidas);
                 }
             });
@@ -91,75 +96,18 @@ export function updateUI(){
                 bebidaEstoque.forEach(bebida => {
                     displayBebida.innerHTML += 
                     `
-                    <p class="border-b-1 pl-2">${bebida.bebida || "Sem nome"}</p>
-                    <p class="border-b-1">${bebida.quantidade || "0"}</p>
+                        <p class="border-b-1 pl-2">${bebida.bebida || "Sem nome"}</p>
+                        <p class="border-b-1">${bebida.quantidade || "0"}</p>
                     `;
                 });
             }
         });
-    
+
+        loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio);
+
         form.classList.add("hidden");
         btnUpdateEstoque.classList.remove("hidden");
         estoque.classList.remove("hidden");
         loadingOverlay.hide();
     }, 900);
-
-    // const recheioEstoque = JSON.parse(localStorage.getItem("recheio")) || [];
-    // const bebidaEstoque = JSON.parse(localStorage.getItem("bebida")) || [];
-    // const orders = JSON.parse(localStorage.getItem("infoForm")) || [];
-        
-    /*setTimeout(() => {
-        const allMassasOrder = orders.flatMap(p => [p.massa1, p.massa2]);
-        const countMassas = {};
-
-        allMassasOrder.forEach(nome => {
-            countMassas[nome] = (countMassas[nome] || 0) + 1;
-        });
-        massaEstoqueRef.forEach(massa => {
-            const qtdPedidos = countMassas[massa.massa] || 0;
-            const qtdAtual = Math.max(parseInt(massa.quantidade) - qtdPedidos, 0);
-
-            displayCurrentMassa.innerHTML += 
-            `
-                <p class="border-b-1 pl-2">${massa.massa || "Nenhuma massa no estoque."}</p>
-                <p class="border-b-1">${qtdAtual || ""}</p>
-            `;
-        });
-
-        const allRecheiosOrders = orders.flatMap(p => [p.recheio1, p.recheio2]);
-        const countRecheios = {};
-
-        allRecheiosOrders.forEach(nome => {
-            countRecheios[nome] = (countRecheios[nome] || 0) + 1;
-        });
-        recheioEstoque.forEach(recheio => {
-            const qtdPedidos = countRecheios[recheio.recheio] || 0;
-            const qtdAtual = Math.max(parseInt(recheio.quantidade) - qtdPedidos, 0);
-
-            displayCurrentRecheio.innerHTML += 
-            `
-                <p class="border-b-1 pl-2">${recheio.recheio || "Nenhuma recheio no estoque."}</p>
-                <p class="border-b-1">${qtdAtual || ""}</p>
-            `;
-        });
-
-        const currentEstoqueMassas = massaEstoque.map(massa => {
-            const qtdPedidos = countMassas[massa.massa] || 0;
-            const qtdAtual = Math.max(parseInt(massa.quantidade) - qtdPedidos, 0);
-            return { massa: massa.massa, quantidade: qtdAtual };
-        });
-        localStorage.setItem("currentEstoqueMassas", JSON.stringify(currentEstoqueMassas));
-
-        const currentEstoqueRecheios = recheioEstoque.map(recheio => {
-            const qtdPedidos = countRecheios[recheio.recheio] || 0;
-            const qtdAtual = Math.max(parseInt(recheio.quantidade) - qtdPedidos, 0);
-            return { recheio: recheio.recheio, quantidade: qtdAtual };
-        });
-        localStorage.setItem("currentEstoqueRecheios", JSON.stringify(currentEstoqueRecheios));
-
-        form.classList.add("hidden");
-        btnUpdateEstoque.classList.remove("hidden");
-        estoque.classList.remove("hidden");
-        loandingOverlay.classList.add("hidden");
-    }, 800);*/
 }
