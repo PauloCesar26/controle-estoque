@@ -25,14 +25,14 @@ const iconOpen = document.getElementById("icon-open");
 const iconClose = document.getElementById("icon-close");
 
 const routes = {
-    "": "/pages/index.html",
-    "/": "/pages/index.html",
+    "": "/pages/home.html",
+    "/": "/pages/home.html",
     "/estoque": "/pages/estoquePage/index.html",
     "/pedido": "/pages/pedidoPage/index.html",
 };
  
 const render = async (path) => {
-    const route = routes[path] || "/pages/index.html";
+    const route = routes[path] || "/pages/home.html";
 
     try{
         const req = await fetch(route);

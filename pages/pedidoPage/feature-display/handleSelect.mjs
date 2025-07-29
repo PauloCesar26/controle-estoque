@@ -1,4 +1,4 @@
-import { db } from "../../app.mjs";
+import { db } from "../../../app.mjs";
 import { ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 export function handleSelect(){

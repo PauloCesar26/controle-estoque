@@ -1,6 +1,6 @@
 import { ref, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { updateUI } from "./updateUI.mjs";
-import { db } from "../../app.mjs";
+import { updateUI } from "../feature-estoque/updateUI.mjs";
+import { db } from "../../../app.mjs";
 
 export async function checkData(){
     const massaRef = ref(db, "massa");

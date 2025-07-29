@@ -1,24 +1,22 @@
-import { updateUI } from "./updateUI.mjs";
-import { loadCurrentEstoque } from "./loadCurrentEstoque.mjs";
-import { loadingOverlay } from "./loadingOverlay.mjs";
+import { updateUI } from "./feature-estoque/updateUI.mjs";
+import { loadingOverlay } from "../components/loadingOverlay.mjs";
 import { db } from "../../app.mjs";
 import { ref, onValue, push, set, remove, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { checkData } from "./checkData.mjs";
-import { cleanDB } from "./cleanDb.mjs";
+import { checkData } from "./feature-db/checkData.mjs";
+import { cleanDB } from "./feature-db/cleanDb.mjs";
 
 export function estoque(){
     const form = document.getElementById("form");
-    const btnLimpar = document.getElementById("limpar");
+    const btnCleanDb = document.getElementById("limpar");
     const btnUpdateEstoque = document.getElementById("update-estoque");
-    const btnVoltarEstoque = document.getElementById("voltar");
-
-    const currentDate = document.getElementById("current-date");
-
+    const btnBackEstoque = document.getElementById("voltar");
+    
     const estoque = document.getElementById("estoque");
     const displayMassa = document.getElementById("exibir-massa");
     const displayRecheio = document.getElementById("exibir-recheio");
     const displayBebida = document.getElementById("exibir-bebida");
-
+    
+    const currentDate = document.getElementById("current-date");
     const date = new Date(); 
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -185,7 +183,7 @@ export function estoque(){
         });
     }
 
-    btnLimpar.addEventListener("click", async () => {
+    btnCleanDb.addEventListener("click", async () => {
         await cleanDB();
 
         displayMassa.innerHTML = "";
@@ -195,7 +193,7 @@ export function estoque(){
         btnUpdateEstoque.classList.add("hidden");
     });
 
-    btnVoltarEstoque.addEventListener("click", () => {
+    btnBackEstoque.addEventListener("click", () => {
         form.classList.add("hidden");
     });
 

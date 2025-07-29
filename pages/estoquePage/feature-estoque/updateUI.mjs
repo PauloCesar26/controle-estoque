@@ -1,6 +1,6 @@
 import { ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { db } from "../../app.mjs";
-import { loadingOverlay } from "./loadingOverlay.mjs";
+import { db } from "../../../app.mjs";
+import { loadingOverlay } from "../../components/loadingOverlay.mjs";
 import { loadCurrentEstoque } from "./loadCurrentEstoque.mjs";
 
 export function updateUI(){    
@@ -18,7 +18,6 @@ export function updateUI(){
     const massaEstoqueRef = ref(db, "massa");
     const recheioEstoqueRef = ref(db, "recheio");
     const bebidaEstoqueRef = ref(db, "bebida");
-    const ordersRef = ref(db, "orders");
 
     loadingOverlay.show();
     setTimeout(() => {

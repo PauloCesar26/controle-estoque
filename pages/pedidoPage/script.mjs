@@ -1,14 +1,12 @@
 import { ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-import { updateUI } from "../estoquePage/updateUI.mjs";
 import { db } from "../../app.mjs";
-import { loadingOverlay } from "../estoquePage/loadingOverlay.mjs";
-import { cleanOrderDb } from "./cleanOrderDb.mjs";
-import { handleSelect } from "./handleSelect.mjs";
+import { cleanOrderDb } from "./feature-db/cleanOrderDb.mjs";
+import { handleSelect } from "./feature-display/handleSelect.mjs";
+import { renderOrders } from "./feature-display/renderOrders.mjs";
 
 export function pedido(){
     const form = document.getElementById("form");
     const btnClean = document.getElementById("limpar");
-    const order = document.getElementById("exibir-order");
     const name = document.getElementById("name");
     const massa1 = document.querySelector(".name-massa1");
     const recheio1 = document.querySelector(".name-recheio1");
@@ -98,7 +96,6 @@ export function pedido(){
             const dbOrder = ref(db, "orders");
             const newRefOrder = push(dbOrder);
             set(newRefOrder, order);
-            // updateUI();
             form.reset();
         });
         
@@ -106,102 +103,6 @@ export function pedido(){
             cleanOrderDb();
         });
     }
-
-    const renderOrders = (snapshot) => {
-        loadingOverlay.show();
-
-        setTimeout(() => {
-            order.innerHTML = "";
-    
-            snapshot.forEach((childSnapshot) => {
-                const item = childSnapshot.val();
-                const itemId = childSnapshot.key;
-
-                if(!item.name || !item.massa1) return;
-    
-                const div = document.createElement("div");
-                div.classList.add("m-2", "pl-2", "pr-2", "pt-1", "pb-1", "border-b-1", "border-zinc-400", "flex", "flex-col", "rounded-[10px]");
-
-                if(item.status === true){
-                    div.classList.add("done");
-                }
-
-                const divButton = document.createElement("div");
-                divButton.classList.add("w-full", "flex", "items-end", "justify-end", "gap-3", "mb-3");
-
-                const span = document.createElement("span");
-                span.innerHTML = `
-                    <p>Nome: ${item.name}</p>
-                    <p>Massa 1: ${item.massa1}</p>
-                    <p>Recheio 1: ${item.recheio1}</p>
-                    <p>Massa 2: ${item.massa2}</p>
-                    <p>Recheio 2: ${item.recheio2}</p>
-                `;
-                
-                const buttonCheck = document.createElement("button");
-                buttonCheck.classList.add(
-                    "pt-1",
-                    "pb-1",
-                    "sm:pl-3",
-                    "sm:pr-3",
-                    "max-sm:pl-2",
-                    "max-sm:pr-2",
-                    "sm:h-10",
-                    "max-sm:h-8",
-                    "rounded-[10px]",
-                    "bg-zinc-950",
-                    "hover:bg-zinc-800",
-                    "ease-in-out",
-                    "text-white",
-                    "flex",
-                    "items-center",
-                    "cursor-pointer",
-                    "transition",
-                    "duration-[0.3s]"
-                );
-                buttonCheck.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-icon lucide-check"><path d="M20 6 9 17l-5-5"/></svg>';
-                
-                const buttonDelete = document.createElement("button");
-                buttonDelete.classList.add(
-                    "pt-1",
-                    "pb-1",
-                    "sm:pl-3",
-                    "sm:pr-3",
-                    "max-sm:pl-2",
-                    "max-sm:pr-2",
-                    "sm:h-10",
-                    "max-sm:h-8",
-                    "rounded-[10px]",
-                    "bg-zinc-950",
-                    "hover:bg-zinc-800",
-                    "ease-in-out",
-                    "text-white",
-                    "flex",
-                    "items-center",
-                    "cursor-pointer",
-                    "transition",
-                    "duration-[0.3s]"
-                );
-                buttonDelete.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>';
-                
-                buttonCheck.addEventListener("click", () => {
-                    const isDone = div.classList.toggle("done");
-                    update(ref(db, `orders/${itemId}`), { status: isDone });
-                });
-                buttonDelete.addEventListener("click", () => {
-                    const orderRef = ref(db, `orders/${itemId}`);
-                    remove(orderRef);
-                });
-
-                div.appendChild(span);
-                divButton.appendChild(buttonCheck);
-                divButton.appendChild(buttonDelete);
-                div.appendChild(divButton);
-                order.appendChild(div);
-            });
-            loadingOverlay.hide();
-        }, 800)
-    };
 
     onValue(ref(db, "orders"), (snapshot) => {
         renderOrders(snapshot);

@@ -1,5 +1,5 @@
-import { loadingOverlay } from "./loadingOverlay.mjs";
-import { db } from "../../app.mjs";
+import { loadingOverlay } from "../../components/loadingOverlay.mjs";
+import { db } from "../../../app.mjs";
 import { ref, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 export async function cleanDB(){
