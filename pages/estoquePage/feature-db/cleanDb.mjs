@@ -9,6 +9,7 @@ export async function cleanDB(){
         await remove(ref(db, "massa"));
         await remove(ref(db, "recheio"));
         await remove(ref(db, "bebida"));
+        await remove(ref(db, "dbCurrentRecheio"));
         
         alert("Dados apagados");
         loadingOverlay.hide();

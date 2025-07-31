@@ -1,4 +1,4 @@
-import { ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 import { db } from "../../../app.mjs";
 
 export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
@@ -9,12 +9,7 @@ export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
     onValue(ordersRef, (snapshot) => {
         const dataOrders = snapshot.val();
 
-        if(!dataOrders){
-            alert("Nenhum pedido encontrado!");
-            return;
-        }
-
-        const orders = Object.values(dataOrders);
+        const orders = dataOrders ? Object.values(dataOrders) : [];
 
         const allMassasOrder = orders.flatMap(p => [p.massa1, p.massa2]);
         const countMassas = {};
@@ -89,5 +84,9 @@ export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
                 `;
             });
         });
+        console.log(currentRecheioEstoque);
+        const dbCurrentRecheio = ref(db, "dbCurrentRecheio");
+        const newRefCurrentRecheio = push(dbCurrentRecheio);
+        set(newRefCurrentRecheio, {currentRecheioEstoque});
     });
 }

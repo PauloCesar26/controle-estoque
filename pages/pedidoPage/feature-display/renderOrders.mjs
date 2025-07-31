@@ -1,3 +1,5 @@
+import { ref, remove, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import { db } from "../../../app.mjs";
 import { loadingOverlay } from "../../components/loadingOverlay.mjs";
 
 export const renderOrders = (snapshot) => {
@@ -25,7 +27,7 @@ export const renderOrders = (snapshot) => {
 
             const span = document.createElement("span");
             span.innerHTML = `
-                <p>Nome: ${item.name}</p>
+                <p class="border-b-1 border-zinc-300">Nome: ${item.name}</p>
                 <p>Massa 1: ${item.massa1}</p>
                 <p>Recheio 1: ${item.recheio1}</p>
                 <p>Massa 2: ${item.massa2}</p>
@@ -80,7 +82,8 @@ export const renderOrders = (snapshot) => {
             
             buttonCheck.addEventListener("click", () => {
                 const isDone = div.classList.toggle("done");
-                update(ref(db, `orders/${itemId}`), { status: isDone });
+                const orderRef = ref(db, `orders/${itemId}`);
+                update(orderRef, { status: isDone });
             });
             buttonDelete.addEventListener("click", () => {
                 const orderRef = ref(db, `orders/${itemId}`);

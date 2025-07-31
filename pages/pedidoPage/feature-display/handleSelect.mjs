@@ -3,7 +3,7 @@ import { ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-
 
 export function handleSelect(){
     const dbMassa = ref(db, "massa");
-    const dbRecheio = ref(db, "recheio");
+    const dbRecheio = ref(db, "dbCurrentRecheio");
     const selectMassa1 = document.querySelector(".name-massa1");
     const selectRecheio1 = document.querySelector(".name-recheio1");
     const selectMassa2 = document.querySelector(".name-massa2");
@@ -46,12 +46,20 @@ export function handleSelect(){
         }
     
         Object.values(data).forEach(obj => {
-            if(obj.listRecheios && Array.isArray(obj.listRecheios)){
-                obj.listRecheios.forEach(item => {
-                    const option = document.createElement("option");
-                    option.value = item.recheio;
-                    option.textContent = item.recheio;
-                    selectRecheio1.appendChild(option);
+            if(obj.currentRecheioEstoque && Array.isArray(obj.currentRecheioEstoque)){
+                obj.currentRecheioEstoque.forEach(item => {
+                    if(item.quantidade > 0){
+                        const option = document.createElement("option");
+                        option.value = item.recheio;
+                        option.textContent = item.recheio;
+                        selectRecheio1.appendChild(option);
+                    }
+                    else{
+                        const option = document.createElement("option");
+                        option.value = "";
+                        option.textContent = "";
+                        selectRecheio1.appendChild(option);
+                    }
                 });
             }
         });
@@ -93,13 +101,15 @@ export function handleSelect(){
             return;
         }
     
-        Object.values(data).forEach(obj => {
-            if(obj.listRecheios && Array.isArray(obj.listRecheios)){
-                obj.listRecheios.forEach(item => {
-                    const option = document.createElement("option");
-                    option.value = item.recheio;
-                    option.textContent = item.recheio;
-                    selectRecheio2.appendChild(option);
+         Object.values(data).forEach(obj => {
+            if(obj.currentRecheioEstoque && Array.isArray(obj.currentRecheioEstoque)){
+                obj.currentRecheioEstoque.forEach(item => {
+                    if(item.quantidade > 0){
+                        const option = document.createElement("option");
+                        option.value = item.recheio;
+                        option.textContent = item.recheio;
+                        selectRecheio2.appendChild(option);
+                    }
                 });
             }
         });
