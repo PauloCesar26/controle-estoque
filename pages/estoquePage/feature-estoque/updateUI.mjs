@@ -2,6 +2,7 @@ import { ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-
 import { db } from "../../../app.mjs";
 import { loadingOverlay } from "../../components/loadingOverlay.mjs";
 import { loadCurrentEstoque } from "./loadCurrentEstoque.mjs";
+import Toastify from "../../components/toastify-js/node_modules/toastify-js/src/toastify-es.js";
 
 export function updateUI(){    
     const displayMassa = document.getElementById("exibir-massa");
@@ -25,7 +26,22 @@ export function updateUI(){
             const data = snapshot.val();
             const massaEstoque = [];
 
-            if(!data){ alert("Não contem massa!"); return; }
+            if(!data){ 
+                Toastify({
+                    text: "Não contém massa!",
+                    duration: 2500,
+                    gravity: "bottom", 
+                    position: "right", 
+                    stopOnFocus: true, 
+                    style: {
+                        background: "#f1b15c",
+                        color: "black",
+                        borderRadius: "10px",
+                        fontWeight: "bold"
+                    },
+                }).showToast();
+                return; 
+            }
     
             Object.values(data).forEach(el => {
                 if(el.listMassas && Array.isArray(el.listMassas)){
@@ -52,7 +68,22 @@ export function updateUI(){
             const data = snapshot.val();
             const recheioEstoque = [];
 
-            if(!data){ alert("Não contem recheio!"); return; }
+            if(!data){ 
+                Toastify({
+                    text: "Não contém recheio!",
+                    duration: 2500,
+                    gravity: "bottom", 
+                    position: "right", 
+                    stopOnFocus: true, 
+                    style: {
+                        background: "#f1b15c",
+                        color: "black",
+                        borderRadius: "10px",
+                        fontWeight: "bold"
+                    },
+                }).showToast();
+                return; 
+            }
     
             Object.values(data).forEach(el => {
                 if(el.listRecheios && Array.isArray(el.listRecheios)){
@@ -79,7 +110,22 @@ export function updateUI(){
             const data = snapshot.val();
             const bebidaEstoque = [];
 
-            if(!data){ alert("Não contem bebida!"); return; }
+            if(!data){ 
+                Toastify({
+                    text: "Não contém bebida!",
+                    duration: 2500,
+                    gravity: "bottom", 
+                    position: "right", 
+                    stopOnFocus: true, 
+                    style: {
+                        background: "#f1b15c",
+                        color: "black",
+                        borderRadius: "10px",
+                        fontWeight: "bold"
+                    },
+                }).showToast();
+                return; 
+            }
     
             Object.values(data).forEach(el => {
                 if(el.listBebidas && Array.isArray(el.listBebidas)){

@@ -1,6 +1,7 @@
+import { ref, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import Toastify from "../../components/toastify-js/node_modules/toastify-js/src/toastify-es.js";
 import { loadingOverlay } from "../../components/loadingOverlay.mjs";
 import { db } from "../../../app.mjs";
-import { ref, remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 export async function cleanDB(){
     loadingOverlay.show();
@@ -11,11 +12,35 @@ export async function cleanDB(){
         await remove(ref(db, "bebida"));
         await remove(ref(db, "dbCurrentRecheio"));
         
-        alert("Dados apagados");
+        Toastify({
+            text: "✅Produtos apagados do banco de dados!",
+            duration: 2700,
+            gravity: "bottom", 
+            position: "right", 
+            stopOnFocus: true, 
+            style: {
+                background: "rgb(10, 92, 139)",
+                color: "white",
+                borderRadius: "10px",
+                fontWeight: "bold"
+            },
+        }).showToast();
         loadingOverlay.hide();
     }
     catch(error){
-        alert(`Erro! ${error.message}`);
+        Toastify(error)({
+            text: `❌Erro ao apagar do banco de dados: ${error.message}`,
+            duration: 2500,
+            gravity: "bottom", 
+            position: "right", 
+            stopOnFocus: true, 
+            style: {
+                background: "rgb(192, 31, 31)",
+                color: "white",
+                borderRadius: "10px",
+                fontWeight: "bold"
+            },
+        }).showToast();
         loadingOverlay.hide();
     }
 };

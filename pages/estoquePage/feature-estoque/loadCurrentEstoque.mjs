@@ -1,4 +1,5 @@
 import { ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import Toastify from "../../components/toastify-js/node_modules/toastify-js/src/toastify-es.js";
 import { db } from "../../../app.mjs";
 
 export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
@@ -30,7 +31,22 @@ export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
             const data = snapshot.val();
             const massaEstoque = [];
             
-            if(!data){ alert("Não contem massa no estoque atual!"); return; }
+            if(!data){ 
+                Toastify({
+                    text: "Não contem massa no estoque atual!",
+                    duration: 2500,
+                    gravity: "bottom", 
+                    position: "right", 
+                    stopOnFocus: true, 
+                    style: {
+                        background: "#f1b15c",
+                        color: "black",
+                        borderRadius: "10px",
+                        fontWeight: "bold"
+                    },
+                }).showToast();
+                return; 
+            }
 
             Object.values(data).forEach(el => {
                 if (el.listMassas && Array.isArray(el.listMassas)) {
@@ -61,7 +77,22 @@ export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
             const data = snapshot.val();
             const recheioEstoque = [];
 
-            if(!data){ alert("Não contem recheio no estoque atual!"); return; }
+            if(!data){ 
+                Toastify({
+                    text: "Não contem recheio no estoque atual!",
+                    duration: 2500,
+                    gravity: "bottom", 
+                    position: "right", 
+                    stopOnFocus: true, 
+                    style: {
+                        background: "#f1b15c",
+                        color: "black",
+                        borderRadius: "10px",
+                        fontWeight: "bold"
+                    },
+                }).showToast();
+                return; 
+            }
 
             Object.values(data).forEach(el => {
                 if (el.listRecheios && Array.isArray(el.listRecheios)) {
@@ -83,10 +114,10 @@ export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
                     <p class="border-b-1">${qtdAtual}</p>
                 `;
             });
+            console.log(currentRecheioEstoque);
+            const dbCurrentRecheio = ref(db, "dbCurrentRecheio");
+            set(dbCurrentRecheio, { currentRecheioEstoque });
         });
-        console.log(currentRecheioEstoque);
-        const dbCurrentRecheio = ref(db, "dbCurrentRecheio");
-        const newRefCurrentRecheio = push(dbCurrentRecheio);
-        set(newRefCurrentRecheio, {currentRecheioEstoque});
     });
+    
 }

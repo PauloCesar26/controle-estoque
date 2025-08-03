@@ -11,6 +11,7 @@ export function handleSelect(){
     
     onValue(dbMassa, (snapshot) => {
         const data = snapshot.val();
+        console.log(data)
         selectMassa1.innerHTML = `<option value="">Selecione...</option>`;
         
         if(!data){
@@ -35,9 +36,10 @@ export function handleSelect(){
 
     onValue(dbRecheio, (snapshot) => {
         const data = snapshot.val();
+        console.log(data);
         selectRecheio1.innerHTML = `<option value="">Selecione...</option>`;
         
-        if(!data){
+        if(!data || !Array.isArray(data.currentRecheioEstoque)){
             selectRecheio1.innerHTML = `
                 <option value="">Selecione...</option>
                 <option disabled>Nenhum recheio</option>
@@ -45,22 +47,13 @@ export function handleSelect(){
             return;
         }
     
-        Object.values(data).forEach(obj => {
-            if(obj.currentRecheioEstoque && Array.isArray(obj.currentRecheioEstoque)){
-                obj.currentRecheioEstoque.forEach(item => {
-                    if(item.quantidade > 0){
-                        const option = document.createElement("option");
-                        option.value = item.recheio;
-                        option.textContent = item.recheio;
-                        selectRecheio1.appendChild(option);
-                    }
-                    else{
-                        const option = document.createElement("option");
-                        option.value = "";
-                        option.textContent = "";
-                        selectRecheio1.appendChild(option);
-                    }
-                });
+        data.currentRecheioEstoque.forEach(item => {
+            console.log("item: ", item)
+            if(item.quantidade > 0){
+                const option = document.createElement("option");
+                option.value = item.recheio;
+                option.textContent = item.recheio;
+                selectRecheio1.appendChild(option);
             }
         });
     })
@@ -91,9 +84,10 @@ export function handleSelect(){
 
     onValue(dbRecheio, (snapshot) => {
         const data = snapshot.val();
+        console.log(data);
         selectRecheio2.innerHTML = `<option value="">Selecione...</option>`;
         
-        if(!data){
+        if(!data || !Array.isArray(data.currentRecheioEstoque)){
             selectRecheio2.innerHTML = `
                 <option value="">Selecione...</option>
                 <option disabled>Nenhum recheio</option>
@@ -101,16 +95,13 @@ export function handleSelect(){
             return;
         }
     
-         Object.values(data).forEach(obj => {
-            if(obj.currentRecheioEstoque && Array.isArray(obj.currentRecheioEstoque)){
-                obj.currentRecheioEstoque.forEach(item => {
-                    if(item.quantidade > 0){
-                        const option = document.createElement("option");
-                        option.value = item.recheio;
-                        option.textContent = item.recheio;
-                        selectRecheio2.appendChild(option);
-                    }
-                });
+        data.currentRecheioEstoque.forEach(item => {
+            console.log("item: ", item)
+            if(item.quantidade > 0){
+                const option = document.createElement("option");
+                option.value = item.recheio;
+                option.textContent = item.recheio;
+                selectRecheio2.appendChild(option);
             }
         });
     })

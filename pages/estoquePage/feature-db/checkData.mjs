@@ -1,5 +1,6 @@
 import { ref, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 import { updateUI } from "../feature-estoque/updateUI.mjs";
+import Toastify from "../../components/toastify-js/node_modules/toastify-js/src/toastify-es.js";
 import { db } from "../../../app.mjs";
 
 export async function checkData(){
@@ -21,10 +22,36 @@ export async function checkData(){
         } 
         else{
             console.log("Nenhum dado encontrado no Firebase");
+            Toastify({
+                text: "Não contém produto no banco de dados!",
+                duration: 2500,
+                gravity: "bottom", 
+                position: "right", 
+                stopOnFocus: true, 
+                style: {
+                    background: "#f1b15c",
+                    color: "black",
+                    borderRadius: "10px",
+                    fontWeight: "bold"
+                },
+            }).showToast();
         }
     } 
     catch(error){
         console.error("Erro ao buscar dados do Firebase:", error);
+        Toastify({
+            text: "Erro ao buscar produtos no banco de dados!",
+            duration: 2500,
+            gravity: "bottom", 
+            position: "right", 
+            stopOnFocus: true, 
+            style: {
+                background: "#f1b15c",
+                color: "black",
+                borderRadius: "10px",
+                fontWeight: "bold"
+            },
+        }).showToast();
     }
 }
 
