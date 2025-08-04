@@ -2,7 +2,7 @@ import { ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-
 import { db } from "../../../app.mjs";
 import { loadingOverlay } from "../../components/loadingOverlay.mjs";
 import { loadCurrentEstoque } from "./loadCurrentEstoque.mjs";
-import Toastify from "../../components/toastify-js/node_modules/toastify-js/src/toastify-es.js";
+import Toastify from "https://cdn.jsdelivr.net/npm/toastify-js/src/toastify-es.js";
 
 export function updateUI(){    
     const displayMassa = document.getElementById("exibir-massa");
