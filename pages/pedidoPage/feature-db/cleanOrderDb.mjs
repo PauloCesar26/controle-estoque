@@ -18,8 +18,8 @@ export async function cleanOrderDb(){
             position: "right", 
             stopOnFocus: true, 
             style: {
-                background: "#f1b15c",
-                color: "black",
+                background: "rgb(0, 0, 0)",
+                color: "white",
                 borderRadius: "10px",
                 fontWeight: "bold"
             },
@@ -35,7 +35,7 @@ export async function cleanOrderDb(){
             position: "right", 
             stopOnFocus: true, 
             style: {
-                background: "rgb(192, 31, 31)",
+                background: "rgb(0, 0, 0)",
                 color: "white",
                 borderRadius: "10px",
                 fontWeight: "bold"
