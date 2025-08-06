@@ -16,18 +16,18 @@ export const renderOrders = (snapshot) => {
             if(!item.name || !item.massa1) return;
 
             const div = document.createElement("div");
-            div.classList.add("m-2", "pl-2", "pr-2", "pt-1", "pb-1", "border-b-1", "border-zinc-400", "flex", "flex-col", "rounded-[10px]");
+            div.classList.add("bg-[#3e1a1a]", "m-2", "pl-2", "pr-2", "pt-1", "pb-1", "border-b-1", "border-zinc-400", "flex", "flex-col", "rounded-[10px]");
 
             if(item.status === true){
                 div.classList.add("done");
             }
 
             const divButton = document.createElement("div");
-            divButton.classList.add("w-full", "flex", "items-end", "justify-end", "gap-3", "mb-3");
+            divButton.classList.add("w-full", "flex", "items-end", "justify-end", "gap-3", "mb-1", "mt-2");
 
             const span = document.createElement("span");
             span.innerHTML = `
-                <p class="border-b-1 border-zinc-300">Nome: ${item.name}</p>
+                <p class="border-b-1 border-[#f4c170]/80">Nome: ${item.name}</p>
                 <p>Massa 1: ${item.massa1}</p>
                 <p>Recheio 1: ${item.recheio1}</p>
                 <p>Massa 2: ${item.massa2}</p>
@@ -36,6 +36,7 @@ export const renderOrders = (snapshot) => {
             
             const buttonCheck = document.createElement("button");
             buttonCheck.classList.add(
+                "bg-[#f4a236]",
                 "pt-1",
                 "pb-1",
                 "sm:pl-3",
@@ -45,10 +46,8 @@ export const renderOrders = (snapshot) => {
                 "sm:h-10",
                 "max-sm:h-8",
                 "rounded-[10px]",
-                "bg-zinc-950",
-                "hover:bg-zinc-800",
                 "ease-in-out",
-                "text-white",
+                "text-black",
                 "flex",
                 "items-center",
                 "cursor-pointer",
@@ -59,6 +58,7 @@ export const renderOrders = (snapshot) => {
             
             const buttonDelete = document.createElement("button");
             buttonDelete.classList.add(
+                "bg-[#ff5b5b]",
                 "pt-1",
                 "pb-1",
                 "sm:pl-3",
@@ -68,10 +68,8 @@ export const renderOrders = (snapshot) => {
                 "sm:h-10",
                 "max-sm:h-8",
                 "rounded-[10px]",
-                "bg-zinc-950",
-                "hover:bg-zinc-800",
                 "ease-in-out",
-                "text-white",
+                "text-black",
                 "flex",
                 "items-center",
                 "cursor-pointer",

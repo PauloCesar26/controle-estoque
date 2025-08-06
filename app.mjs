@@ -1,5 +1,6 @@
 import { estoque } from "./pages/estoquePage/script.mjs";
 import { pedido } from "./pages/pedidoPage/script.mjs";
+import { ordersPanel } from "./pages/ordersPanel/script.mjs";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
@@ -16,7 +17,7 @@ const firebaseConfig = {
 const appFirebase = initializeApp(firebaseConfig);
 export const db = getDatabase(appFirebase);
 
-const app = document.getElementById("app");
+export const app = document.getElementById("app");
 const links = document.querySelectorAll("a[data-link]");
 const buttons = document.querySelectorAll(".button");
 const menu = document.getElementById("menu");
@@ -29,6 +30,7 @@ const routes = {
     "/": "/pages/home.html",
     "/estoque": "/pages/estoquePage/index.html",
     "/pedido": "/pages/pedidoPage/index.html",
+    "/painelPedidos": "/pages/ordersPanel/index.html",
 };
  
 const render = async (path) => {
@@ -47,8 +49,8 @@ const render = async (path) => {
         console.error("Erro: ", error);
         app.innerHTML = "<h1>Erro ao carregar a página</h1>";
     }
-
 };
+
 const navigate = (e) => {
     e.preventDefault();
     const path = e.target.getAttribute("href");
@@ -63,6 +65,9 @@ const logicPage = (path) => {
     if(path === "/pedido"){
         pedido();
     }
+    if(path === "/painelPedidos"){
+        ordersPanel();
+    }
 };
 
 window.onpopstate = () => {
@@ -70,7 +75,7 @@ window.onpopstate = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    if(location.pathname === "/page1" || location.pathname === "/page2"){
+    if(location.pathname === "/estoque" || location.pathname === "/pedido" || location.pathname === "/painelPedidos"){
         history.replaceState({}, "", "/");
         render("/");
         return;
@@ -79,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     links.forEach(link => {
         link.addEventListener("click", navigate);
     });
+
     render(location.pathname);
 });
 

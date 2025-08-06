@@ -55,9 +55,13 @@
             top: 0;
         }
         .done{
-            background-color: rgb(74, 2, 2);
+            opacity: 0.6;
             text-decoration: line-through;
             font-style: italic;
+        }
+        .button{
+            background-color: #db9335;
+            color: black;
         }
     </style>
 </head>
@@ -113,10 +117,10 @@
                 </div>
     
                 <div class="flex flex-col space-y-2 pt-3 mt-3 border-t-2 border-zinc-100">
-                    <button type="submit" class="font-bold pt-3 pb-3 bg-zinc-950 hover:bg-zinc-800 ease-in-out text-white rounded-[10px] cursor-pointer transition duration-[0.3s]">
+                    <button type="submit" class="button font-bold pt-3 pb-3 bg-zinc-950 hover:bg-zinc-800 ease-in-out text-white rounded-[10px] cursor-pointer transition duration-[0.3s]">
                         Enviar
                     </button>
-                    <button id="limpar" class="font-bold pt-3 pb-3 bg-zinc-950 hover:bg-zinc-800 ease-in-out text-white rounded-[10px] cursor-pointer transition duration-[0.3s]">
+                    <button id="limpar" class="button font-bold pt-3 pb-3 bg-zinc-950 hover:bg-zinc-800 ease-in-out text-white rounded-[10px] cursor-pointer transition duration-[0.3s]">
                         Excluir pedidos
                     </button>
                 </div>
@@ -124,7 +128,7 @@
         </div>
     
         <div class="max-w-[650px] min-w-[200px] sm:w-300 text-white rounded-[15px] md:ml-auto md:mr-auto flex flex-col mt-2 p-2 mb-5 border-t-1 border-zinc-100">
-            <h1 class="font-bold">Pedidos:</h1>
+            <h1 class="font-bold p-1">🍰 Pedidos:</h1>
             <div id="exibir-order" class="w-full">
     
             </div>
