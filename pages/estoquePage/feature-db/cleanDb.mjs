@@ -11,6 +11,7 @@ export async function cleanDB(){
         await remove(ref(db, "recheio"));
         await remove(ref(db, "bebida"));
         await remove(ref(db, "dbCurrentRecheio"));
+        await remove(ref(db, "dbCurrentMassa"));
         
         Toastify({
             text: "✅Produtos apagados do banco de dados!",

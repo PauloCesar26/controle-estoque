@@ -2,7 +2,7 @@ import { db } from "../../../app.mjs";
 import { ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 export function handleSelect(){
-    const dbMassa = ref(db, "massa");
+    const dbMassa = ref(db, "dbCurrentMassa");
     const dbRecheio = ref(db, "dbCurrentRecheio");
     const selectMassa1 = document.querySelector(".name-massa1");
     const selectRecheio1 = document.querySelector(".name-recheio1");
@@ -12,9 +12,10 @@ export function handleSelect(){
     onValue(dbMassa, (snapshot) => {
         const data = snapshot.val();
         console.log(data)
+        console.log("Entrou aqui")
         selectMassa1.innerHTML = `<option value="">Selecione...</option>`;
         
-        if(!data){
+        if(!data || !Array.isArray(data.currentMassaEstoque)){
             selectMassa1.innerHTML = `
                 <option value="">Selecione...</option>
                 <option disabled>Nenhuma massa</option>
@@ -22,14 +23,13 @@ export function handleSelect(){
             return;
         }
     
-        Object.values(data).forEach(obj => {
-            if(obj.listMassas && Array.isArray(obj.listMassas)){
-                obj.listMassas.forEach(item => {
-                    const option = document.createElement("option");
-                    option.value = item.massa;
-                    option.textContent = item.massa;
-                    selectMassa1.appendChild(option);
-                });
+        data.currentMassaEstoque.forEach(item => {
+            console.log("item massa 1: ", item)
+            if(item.quantidade > 0){
+                const option = document.createElement("option");
+                option.value = item.massa;
+                option.textContent = item.massa;
+                selectMassa1.appendChild(option);
             }
         });
     })
@@ -48,7 +48,7 @@ export function handleSelect(){
         }
     
         data.currentRecheioEstoque.forEach(item => {
-            console.log("item: ", item)
+            console.log("item recheio 1: ", item)
             if(item.quantidade > 0){
                 const option = document.createElement("option");
                 option.value = item.recheio;
@@ -60,9 +60,11 @@ export function handleSelect(){
 
     onValue(dbMassa, (snapshot) => {
         const data = snapshot.val();
+        console.log(data)
+        console.log("Entrou aqui")
         selectMassa2.innerHTML = `<option value="">Selecione...</option>`;
         
-        if(!data){
+        if(!data || !Array.isArray(data.currentMassaEstoque)){
             selectMassa2.innerHTML = `
                 <option value="">Selecione...</option>
                 <option disabled>Nenhuma massa</option>
@@ -70,14 +72,13 @@ export function handleSelect(){
             return;
         }
     
-        Object.values(data).forEach(obj => {
-            if(obj.listMassas && Array.isArray(obj.listMassas)){
-                obj.listMassas.forEach(item => {
-                    const option = document.createElement("option");
-                    option.value = item.massa;
-                    option.textContent = item.massa;
-                    selectMassa2.appendChild(option);
-                });
+        data.currentMassaEstoque.forEach(item => {
+            console.log("item massa 2: ", item)
+            if(item.quantidade > 0){
+                const option = document.createElement("option");
+                option.value = item.massa;
+                option.textContent = item.massa;
+                selectMassa2.appendChild(option);
             }
         });
     })

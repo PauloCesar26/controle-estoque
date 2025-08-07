@@ -9,6 +9,8 @@ export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
 
     onValue(ordersRef, (snapshot) => {
         const dataOrders = snapshot.val();
+        const currentMassaEstoque = [];
+        const currentRecheioEstoque = [];
 
         const orders = dataOrders ? Object.values(dataOrders) : [];
 
@@ -23,10 +25,8 @@ export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
         allRecheiosOrder.forEach(nome => {
             countRecheios[nome] = (countRecheios[nome] || 0) + 1;
         });
-
-        const currentMassaEstoque = [];
+ 
         displayCurrentMassa.innerHTML = "";
-
         onValue(massaEstoqueRef, (snapshot) => {
             const data = snapshot.val();
             const massaEstoque = [];
@@ -68,11 +68,12 @@ export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
                     <p class="border-b-1">${qtdAtual}</p>
                 `;
             });
+
+            const dbCurrentMassa = ref(db, "dbCurrentMassa");
+            set(dbCurrentMassa, { currentMassaEstoque });
         });
         
-        const currentRecheioEstoque = [];
         displayCurrentRecheio.innerHTML = "";
-
         onValue(recheioEstoqueRef, (snapshot) => {
             const data = snapshot.val();
             const recheioEstoque = [];
@@ -114,10 +115,9 @@ export function loadCurrentEstoque(displayCurrentMassa, displayCurrentRecheio){
                     <p class="border-b-1">${qtdAtual}</p>
                 `;
             });
-            console.log(currentRecheioEstoque);
+
             const dbCurrentRecheio = ref(db, "dbCurrentRecheio");
             set(dbCurrentRecheio, { currentRecheioEstoque });
         });
     });
-    
 }
