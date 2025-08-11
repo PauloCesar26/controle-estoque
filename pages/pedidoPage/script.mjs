@@ -4,7 +4,6 @@ import { db } from "../../app.mjs";
 import { cleanOrderDb } from "./feature-db/cleanOrderDb.mjs";
 import { handleSelect } from "./feature-display/handleSelect.mjs";
 import { renderOrders } from "./feature-display/renderOrders.mjs";
-import { app } from "../../app.mjs";
 
 export function pedido(){
     const form = document.getElementById("form");
