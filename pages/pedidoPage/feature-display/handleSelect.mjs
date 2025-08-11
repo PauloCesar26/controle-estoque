@@ -11,8 +11,6 @@ export function handleSelect(){
     
     onValue(dbMassa, (snapshot) => {
         const data = snapshot.val();
-        console.log(data)
-        console.log("Entrou aqui")
         selectMassa1.innerHTML = `<option value="">Selecione...</option>`;
         
         if(!data || !Array.isArray(data.currentMassaEstoque)){
@@ -24,7 +22,7 @@ export function handleSelect(){
         }
     
         data.currentMassaEstoque.forEach(item => {
-            console.log("item massa 1: ", item)
+            // console.log("item massa 1: ", item)
             if(item.quantidade > 0){
                 const option = document.createElement("option");
                 option.value = item.massa;
@@ -36,7 +34,6 @@ export function handleSelect(){
 
     onValue(dbRecheio, (snapshot) => {
         const data = snapshot.val();
-        console.log(data);
         selectRecheio1.innerHTML = `<option value="">Selecione...</option>`;
         
         if(!data || !Array.isArray(data.currentRecheioEstoque)){
@@ -48,7 +45,7 @@ export function handleSelect(){
         }
     
         data.currentRecheioEstoque.forEach(item => {
-            console.log("item recheio 1: ", item)
+            // console.log("item recheio 1: ", item)
             if(item.quantidade > 0){
                 const option = document.createElement("option");
                 option.value = item.recheio;
@@ -60,8 +57,6 @@ export function handleSelect(){
 
     onValue(dbMassa, (snapshot) => {
         const data = snapshot.val();
-        console.log(data)
-        console.log("Entrou aqui")
         selectMassa2.innerHTML = `<option value="">Selecione...</option>`;
         
         if(!data || !Array.isArray(data.currentMassaEstoque)){
@@ -73,7 +68,7 @@ export function handleSelect(){
         }
     
         data.currentMassaEstoque.forEach(item => {
-            console.log("item massa 2: ", item)
+            // console.log("item massa 2: ", item)
             if(item.quantidade > 0){
                 const option = document.createElement("option");
                 option.value = item.massa;
@@ -85,7 +80,6 @@ export function handleSelect(){
 
     onValue(dbRecheio, (snapshot) => {
         const data = snapshot.val();
-        console.log(data);
         selectRecheio2.innerHTML = `<option value="">Selecione...</option>`;
         
         if(!data || !Array.isArray(data.currentRecheioEstoque)){
@@ -97,7 +91,7 @@ export function handleSelect(){
         }
     
         data.currentRecheioEstoque.forEach(item => {
-            console.log("item: ", item)
+            // console.log("item recheio 2: ", item)
             if(item.quantidade > 0){
                 const option = document.createElement("option");
                 option.value = item.recheio;

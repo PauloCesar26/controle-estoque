@@ -1,4 +1,5 @@
-import { ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+import Toastify from "https://cdn.jsdelivr.net/npm/toastify-js/src/toastify-es.js";
+import { ref, onValue, push, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 import { db } from "../../app.mjs";
 import { cleanOrderDb } from "./feature-db/cleanOrderDb.mjs";
 import { handleSelect } from "./feature-display/handleSelect.mjs";
@@ -107,5 +108,44 @@ export function pedido(){
 
     onValue(ref(db, "orders"), (snapshot) => {
         renderOrders(snapshot);
+    });
+
+    onValue(ref(db, "orders"), (snapshot) => {
+        const data = snapshot.val();
+        const displayQtdOrders = document.getElementById("qtd-pedido-panel");
+        const displayQtdOrdersPreparing = document.getElementById("qtd-pedido-preparing");
+        let currentQtdOrders = 0;
+        let currentQtdOrdersPreparing = 0;
+
+        if(!data){ 
+            displayQtdOrders.textContent = "0";
+            displayQtdOrdersPreparing.textContent = "0";
+            Toastify({
+                text: "Nenhum pedido feito!",
+                duration: 2500,
+                gravity: "bottom", 
+                position: "right", 
+                stopOnFocus: true, 
+                style: {
+                    background: "rgb(0, 0, 0)",
+                    color: "white",
+                    borderRadius: "10px",
+                    fontWeight: "bold"
+                },
+            }).showToast();
+            return; 
+        }
+
+        Object.values(data).forEach(el => {
+            if(el){
+                currentQtdOrders++;
+            }
+            if(el.status === false){
+                currentQtdOrdersPreparing++;
+            }
+        });
+        
+        displayQtdOrders.textContent = `${currentQtdOrders}`;
+        displayQtdOrdersPreparing.textContent = `${currentQtdOrdersPreparing}`;
     });
 }
