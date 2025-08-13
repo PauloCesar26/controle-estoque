@@ -16,7 +16,7 @@ export const renderOrders = (snapshot) => {
             if(!item.name || !item.massa1) return;
 
             const div = document.createElement("div");
-            div.classList.add("bg-[#3e1a1a]", "m-2", "pl-2", "pr-2", "pt-1", "pb-1", "border-b-1", "border-zinc-400", "flex", "flex-col", "rounded-[10px]");
+            div.classList.add("bg-[#3e1a1a]", "mt-2", "mb-2", "ml-1", "mr-1", "pl-2", "pr-2", "pt-1", "pb-1", "border-b-1", "border-zinc-400", "flex", "flex-col", "rounded-[10px]");
 
             if(item.status === true){
                 div.classList.add("done");
