@@ -1,0 +1,92 @@
+<div class="flex-1 w-full h-full bg-red-950/90">
+    <div class="max-w-[650px] min-w-[200px] sm:w-300 text-white rounded-[15px] ml-1 mr-1 md:ml-auto md:mr-auto pt-5 pb-5 pl-3 pr-3 space-y-3 flex flex-col items-center mt-5 mb-5">
+        <h1 class="border-b-1 border-white pb-2 pl-2 pr-2 text-center font-bold text-[1.2rem]">Pedidos do dia <span id="current-date"></span></h1>
+
+        <form id="form" class="pl-3 pr-3 w-full">
+            <div class="flex flex-col space-y-3">
+                <div class="flex flex-col border-b-1 border-zinc-100/20 pb-4">
+                    <span class="flex flex-col">
+                        <label for="name">Nome do cliente:</label>
+                        <input type="text" id="name" placeholder="Digite o nome do cliente" class="bg-zinc-100 rounded-[6px] pt-1 pb-1 pl-2 text-black">
+                    </span>
+                </div>
+    
+                <div class="flex flex-col">
+                    <span class="flex flex-col">
+                        <label for="massa1">Massa 1:</label>
+                        <select name="" class="name-massa1 w-30 bg-zinc-100 text-black pt-1 pb-1 pl-1 pr-3 rounded-[10px]">
+                            
+                        </select>
+                    </span>
+                </div>
+    
+                <div class="flex flex-col border-b-1 border-zinc-100/20 pb-4">
+                    <span class="flex flex-col gap-1">
+                        <label for="recheio1">Recheio 1:</label>
+                        <select name="" class="name-recheio1 w-30 bg-zinc-100 text-black pt-1 pb-1 pl-1 pr-3 rounded-[10px]">
+                            
+                        </select>
+                    </span>
+                </div>
+
+                <div class="flex flex-col">
+                    <span class="flex flex-col">
+                        <label for="massa2">Massa 2:</label>
+                        <select name="" class="name-massa2 w-30 bg-zinc-100 text-black pt-1 pb-1 pl-1 pr-3 rounded-[10px]">
+                            
+                        </select>
+                    </span>
+                </div>
+
+                <div class="flex flex-col">
+                    <span class="flex flex-col gap-1">
+                        <label for="recheio2">Recheio 2:</label>
+                        <select name="" class="name-recheio2 w-30 bg-zinc-100 text-black pt-1 pb-1 pl-1 pr-3 rounded-[10px]">
+                            
+                        </select>
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex flex-col space-y-2 pt-3 mt-3 border-t-2 border-zinc-100">
+                <button type="submit" class="button font-bold pt-3 pb-3 bg-zinc-950 hover:bg-zinc-800 ease-in-out text-white rounded-[10px] cursor-pointer transition duration-[0.3s]">
+                    Enviar
+                </button>
+                <button id="limpar" class="button font-bold pt-3 pb-3 bg-zinc-950 hover:bg-zinc-800 ease-in-out text-white rounded-[10px] cursor-pointer transition duration-[0.3s]">
+                    Excluir pedidos
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="max-w-[650px] min-w-[200px] sm:w-300 text-white rounded-[15px] md:ml-auto md:mr-auto flex flex-col mt-2 p-2 mb-5 border-t-1 border-zinc-100">
+        <div class="w-full space-y-3">
+                <div class="w-full p-1 sm:flex gap-4 max-sm:flex-col items-center justify-center border-b-1 border-[#f4c170]/80">
+                <p class="font-bold">Total pedido feito: <span id="qtd-pedido-panel"></span></p>
+                <span class="max-sm:hidden">|</span>
+                <p class="font-bold">Pedido em preparo: <span id="qtd-pedido-preparing"></span></p>
+            </div>
+            <h1 class="font-bold p-1">🍰 Pedidos:</h1>
+        </div>
+        <div id="exibir-order" class="w-full">
+
+        </div>
+    </div>
+
+    <div id="loadingOverlay" class="hidden">
+        <div class="
+            fixed 
+            top-0 
+            left-0
+            w-full
+            h-full
+            bg-red-900
+            opacity-90
+            z-50
+            flex
+            items-center
+            justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-circle-icon lucide-loader-circle animate-spin text-white"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        </div>
+    </div>
+</div>
