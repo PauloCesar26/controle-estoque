@@ -1,6 +1,6 @@
-import { estoque } from "/src/pages/estoquePage/scriptStock.mjs";
-import { pedido } from "/src/pages/pedidoPage/scriptOrders.mjs";
-import { ordersPanel } from "/src/pages/ordersPanel/scriptOrdersPanel.mjs";
+import { estoque } from "./pages/estoquePage/scriptStock.mjs";
+import { pedido } from "./pages/pedidoPage/scriptOrders.mjs";
+import { ordersPanel } from "./pages/ordersPanel/scriptOrdersPanel.mjs";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
