@@ -8,96 +8,61 @@ export function handleSelect(){
     const selectRecheio1 = document.querySelector(".name-recheio1");
     const selectMassa2 = document.querySelector(".name-massa2");
     const selectRecheio2 = document.querySelector(".name-recheio2");
-    
-    onValue(dbMassa, (snapshot) => {
-        const data = snapshot.val();
-        selectMassa1.innerHTML = `<option value="">Selecione...</option>`;
-        
-        if(!data || !Array.isArray(data.currentMassaEstoque)){
-            selectMassa1.innerHTML = `
-                <option value="">Selecione...</option>
-                <option disabled>Nenhuma massa</option>
-            `;
-            return;
-        }
-    
-        data.currentMassaEstoque.forEach(item => {
-            // console.log("item massa 1: ", item)
-            if(item.quantidade > 0){
-                const option = document.createElement("option");
-                option.value = item.massa;
-                option.textContent = item.massa;
-                selectMassa1.appendChild(option);
-            }
-        });
-    })
 
-    onValue(dbRecheio, (snapshot) => {
-        const data = snapshot.val();
-        selectRecheio1.innerHTML = `<option value="">Selecione...</option>`;
-        
-        if(!data || !Array.isArray(data.currentRecheioEstoque)){
-            selectRecheio1.innerHTML = `
-                <option value="">Selecione...</option>
-                <option disabled>Nenhum recheio</option>
-            `;
-            return;
-        }
-    
-        data.currentRecheioEstoque.forEach(item => {
-            // console.log("item recheio 1: ", item)
-            if(item.quantidade > 0){
-                const option = document.createElement("option");
-                option.value = item.recheio;
-                option.textContent = item.recheio;
-                selectRecheio1.appendChild(option);
+    const queryDatabaseCurrentProducts = (
+        databaseRef, 
+        selectElement,
+        dataKey,
+        itemLabelKey
+    ) => {
+        onValue(databaseRef, (snapshot) => {
+            const data = snapshot.val();
+            selectElement.innerHTML = `<option value="">Selecione...</option>`;
+            
+            if(!data || !Array.isArray(data[dataKey])){
+                selectElement.innerHTML = `
+                    <option value="">Selecione...</option>
+                    <option disabled>Nenhum produto</option>
+                `;
+                return;
             }
-        });
-    })
+        
+            data[dataKey].forEach(item => {
+                if(item.quantidade > 0){
+                    const option = document.createElement("option");
+                    option.value = item[itemLabelKey];
+                    option.textContent = item[itemLabelKey];
+                    selectElement.appendChild(option);
+                }
+            });
+        })
+    };
 
-    onValue(dbMassa, (snapshot) => {
-        const data = snapshot.val();
-        selectMassa2.innerHTML = `<option value="">Selecione...</option>`;
-        
-        if(!data || !Array.isArray(data.currentMassaEstoque)){
-            selectMassa2.innerHTML = `
-                <option value="">Selecione...</option>
-                <option disabled>Nenhuma massa</option>
-            `;
-            return;
-        }
-    
-        data.currentMassaEstoque.forEach(item => {
-            // console.log("item massa 2: ", item)
-            if(item.quantidade > 0){
-                const option = document.createElement("option");
-                option.value = item.massa;
-                option.textContent = item.massa;
-                selectMassa2.appendChild(option);
-            }
-        });
-    })
+    queryDatabaseCurrentProducts(
+        dbMassa,
+        selectMassa1,
+        "currentMassaEstoque",
+        "massa"
+    );
 
-    onValue(dbRecheio, (snapshot) => {
-        const data = snapshot.val();
-        selectRecheio2.innerHTML = `<option value="">Selecione...</option>`;
-        
-        if(!data || !Array.isArray(data.currentRecheioEstoque)){
-            selectRecheio2.innerHTML = `
-                <option value="">Selecione...</option>
-                <option disabled>Nenhum recheio</option>
-            `;
-            return;
-        }
-    
-        data.currentRecheioEstoque.forEach(item => {
-            // console.log("item recheio 2: ", item)
-            if(item.quantidade > 0){
-                const option = document.createElement("option");
-                option.value = item.recheio;
-                option.textContent = item.recheio;
-                selectRecheio2.appendChild(option);
-            }
-        });
-    })
+    queryDatabaseCurrentProducts(
+        dbRecheio,
+        selectRecheio1,
+        "currentRecheioEstoque",
+        "recheio"
+    );
+
+    queryDatabaseCurrentProducts(
+        dbMassa,
+        selectMassa2,
+        "currentMassaEstoque",
+        "massa"
+    );
+
+    queryDatabaseCurrentProducts(
+        dbRecheio,
+        selectRecheio2,
+        "currentRecheioEstoque",
+        "recheio"
+    );
 }

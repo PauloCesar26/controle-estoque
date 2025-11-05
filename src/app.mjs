@@ -89,8 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    console.log(menu, buttonMenu);
-
     links.forEach(link => link.addEventListener("click", navigate));
 
     render(location.pathname);
