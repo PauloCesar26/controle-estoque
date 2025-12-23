@@ -14,7 +14,7 @@ const firebaseConfig = {
     databaseURL: "https://controle-estoque-jd-default-rtdb.firebaseio.com"
 };
 
-const appFirebase = initializeApp(firebaseConfig);
+export const appFirebase = initializeApp(firebaseConfig);
 export const db = getDatabase(appFirebase);
 
 export const app = document.getElementById("app");
@@ -33,7 +33,7 @@ const routes = {
     "/painelPedidos": "/src/pages/ordersPanel/index.html",
 };
  
-const render = async (path) => {
+export const render = async (path) => {
     const route = routes[path] || routes["/"];
 
     try{
